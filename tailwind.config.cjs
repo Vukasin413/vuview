@@ -80,7 +80,7 @@ module.exports = {
           name: "monokai",
           extend: {
             colors: {
-              bg1: "#150e1c",
+              bg1: "#0a0a0a",
               bg2: "#252228",
               bg3: "#343238",
               text1: "#f8f8f2",
