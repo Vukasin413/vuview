@@ -113,7 +113,7 @@ export default function Channel() {
     if (!query.data) return;
     const channel = query.data.pages[0];
     if (!channel) return;
-    document.title = `${channel.name} - Conduit`;
+    document.title = `${channel.name} - VuView`;
     const tabs = channel.tabs;
     if (!tabs) return;
     console.log("tabs", tabs);
