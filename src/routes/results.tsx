@@ -107,7 +107,7 @@ export default function Search() {
   }));
 
   createEffect(() => {
-    document.title = searchParams.search_query + " - Conduit";
+    document.title = searchParams.search_query + " - VuView";
     if (preferences.history.saveSearchHistory) {
       saveQueryToHistory();
     }
