@@ -438,12 +438,12 @@ export default function Header() {
       <div class="flex items-center justify-between w-full h-full py-2 max-w-full min-w-0">
         <Link
           href={`/${preferences.content.defaultHomePage?.toLowerCase() ?? "trending"}`}
-          class="text-text1 mx-2 w-18 h-8"
+          class="text-text1 mx-2 w-22 h-8"
         >
           <img
             src="/logo.svg"
             alt="Conduit"
-            class="h-8 w- "
+            class="h-10 w-8 "
           />
         </Link>
         <Search />
