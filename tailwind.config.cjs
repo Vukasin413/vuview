@@ -77,7 +77,7 @@ module.exports = {
           },
         },
         {
-          name: "monokai",
+          name: "dark",
           extend: {
             colors: {
               bg1: "#171712",
@@ -96,7 +96,7 @@ module.exports = {
           },
         },
         {
-          name: "github",
+          name: "white",
           extend: {
             colors: {
               bg1: "#f6f8fa",
