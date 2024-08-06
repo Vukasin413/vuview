@@ -47,7 +47,7 @@ export default function Trending() {
 
   return (
     <div class="flex min-h-full flex-wrap justify-center bg-bg1">
-      <Title>Trending | Conduit</Title>
+      <Title>Trending | VuView</Title>
       <div class="flex flex-col w-full mt-2 p-2">
         <Select
           options={TRENDING_REGIONS.map((region) => ({
