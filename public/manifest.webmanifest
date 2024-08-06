@@ -240,7 +240,7 @@
     },
     {
       "src": "img/icons/windows11/Square44x44Logo.altform-unplated_targetsize-32.png",
-      "sizes": "32x32"
+      "sizes": "523x32"
     },
     {
       "src": "img/icons/windows11/Square44x44Logo.altform-unplated_targetsize-36.png",
@@ -300,7 +300,7 @@
     },
     {
       "src": "img/icons/windows11/Square44x44Logo.altform-lightunplated_targetsize-32.png",
-      "sizes": "32x32"
+      "sizes": "523x32"
     },
     {
       "src": "img/icons/windows11/Square44x44Logo.altform-lightunplated_targetsize-36.png",
@@ -380,7 +380,7 @@
     },
     {
       "src": "img/icons/ios/32.png",
-      "sizes": "32x32"
+      "sizes": "523x32"
     },
     {
       "src": "img/icons/ios/40.png",
