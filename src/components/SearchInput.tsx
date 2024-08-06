@@ -258,7 +258,7 @@ const SearchInput = () => {
         class="w-full h-10 border-0 max-w-full peer outline-none bg-bg2 border-bg2 focus:border-2 focus:border-r-0 placeholder-shown:focus:border-r-2 text-text1 text-sm rounded-full rounded-r-none placeholder-shown:rounded-r-full transition-transform focus:ring-primary focus:border-primary py-1 px-2.5"
         type="combobox"
         value={inputValue()}
-        placeholder="Search... (Ctrl + K)"
+        placeholder="Search (Ctrl + K)"
         onInput={handleInputChange}
         onFocus={handleInputFocus}
         onBlur={async () => {
