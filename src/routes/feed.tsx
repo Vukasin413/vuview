@@ -91,7 +91,7 @@ export default function Feed() {
 
   const newComponent = (
     <>
-      <Title>Feed | Conduit</Title>
+      <Title>Feed | VuView</Title>
       <div class="mx-2 flex flex-wrap gap-2 justify-center">
         <Tooltip.Root>
           <Tooltip.Trigger
