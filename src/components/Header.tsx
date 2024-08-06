@@ -438,7 +438,7 @@ export default function Header() {
       <div class="flex items-center justify-between w-full h-full py-2 max-w-full min-w-0">
         <Link
           href={`/${preferences.content.defaultHomePage?.toLowerCase() ?? "trending"}`}
-          class="text-text1 mx-2 w-24 h-14"
+          class="text-text1 mx-4 w-26 h-14"
         >
           <img
             src="/logo.svg"
