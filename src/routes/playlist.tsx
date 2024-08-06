@@ -20,7 +20,7 @@ import EmptyState from "~/components/EmptyState";
 export default function Playlist() {
   const [list, setList] = createSignal<PlaylistType>();
   const route = useLocation();
-  const isLocal = () => route.query.list?.startsWith("conduit-");
+  const isLocal = () => route.query.list?.startsWith("vuview-");
   const id = route.query.list;
   const sync = useSyncStore();
   const [preferences] = usePreferences();
