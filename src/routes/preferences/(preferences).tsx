@@ -123,7 +123,7 @@ export default function Preferences() {
           trigger={
             <PreferencesCard
               title="User Interface"
-              description="Customize the look and feel of Conduit"
+              description="Customize the look and feel of VuView"
               icon={<FaSolidPalette class="w-5 h-5" />}
             />
           }
@@ -503,14 +503,14 @@ export default function Preferences() {
             class="w-full pl-10 outline-none focus-visible:ring-4 focus-visible:ring-primary rounded hover:bg-bg2"
           >
             <PreferencesCard
-              title="Export Conduit data"
+              title="Export VuView data"
               icon={<FaSolidDownload class="w-5 h-5" />}
             />
           </button>
           <button
             onClick={() => {
               dialog.showDelete({
-                title: "Delete Conduit data",
+                title: "Delete VuView data",
                 message:
                   "Are you sure you want to delete all data?<br>This operation cannot be undone.",
                 onConfirm: () => recursiveDelete(sync.store),
@@ -519,7 +519,7 @@ export default function Preferences() {
             class="w-full pl-10 outline-none focus-visible:ring-4 focus-visible:ring-primary rounded hover:bg-bg2"
           >
             <PreferencesCard
-              title="Delete Conduit data"
+              title="Delete VuView data"
               icon={<FaSolidTrashCan class="w-5 h-5" />}
             />
           </button>
