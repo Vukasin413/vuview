@@ -16,10 +16,10 @@ export const YOUTUBE_CATEGORIES = [
   "Nonprofits & Activism",
 ];
 export const THEME_OPTIONS = [
-  { value: "monokai", label: "Monokai" },
+  { value: "monokai", label: "🌙Dark" },
   { value: "dracula", label: "Dracula" },
   { value: "discord", label: "Discord" },
-  { value: "github", label: "Github" },
+  { value: "github", label: "☀️Light" },
 ];
 export const VIDEO_RESOLUTIONS = [
   "Auto",
