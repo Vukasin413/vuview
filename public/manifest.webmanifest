@@ -1,6 +1,6 @@
 {
-  "name": "Conduit",
-  "short_name": "Conduit",
+  "name": "VuView - Web Player",
+  "short_name": "VuView",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#000000",
