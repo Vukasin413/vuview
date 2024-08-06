@@ -74,7 +74,7 @@ export default function ShareModal(props: {
                 }}
                 class="outline-none text-sm font-medium w-14 h-14 rounded-lg"
               >
-                <div class="w-full h-full rounded-full p-2 bg-primary/80">
+                <div class="w-full h-full rounded-full p-2 bg-primary/100">
                   <img alt="Conduit" src="/favicon.png" class="w-full h-full" />
                 </div>
               </button>
