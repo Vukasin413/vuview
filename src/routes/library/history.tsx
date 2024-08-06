@@ -112,7 +112,7 @@ export default function History() {
 
   return (
     <div class="">
-      <Title>History | Conduit</Title>
+      <Title>History | VuView</Title>
       <Button label="Import" onClick={() => setImportModalOpen(true)} />
       <ImportHistoryModal
         isOpen={importModalOpen()}
