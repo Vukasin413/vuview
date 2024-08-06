@@ -104,7 +104,7 @@ module.exports = {
               bg3: "#e6e8ea",
               text1: "#24292e",
               text2: "#2c2c2e",
-              text3: "#f6f8fa",
+              text3: "#333333",
               primary: "#0366d6",
               secondary: "#6a737d",
               highlight: "#1066d6",
