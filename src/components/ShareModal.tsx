@@ -70,15 +70,15 @@ export default function ShareModal(props: {
             >
               <button
                 onClick={() => {
-                  setPlatform("Conduit");
+                  setPlatform("VuView");
                 }}
                 class="outline-none text-sm font-medium w-14 h-14 rounded-lg"
               >
                 <div class="w-full h-full rounded-full p-2 bg-primary/80">
-                  <img alt="Conduit" src="/logo.svg" class="w-full h-full" />
+                  <img alt="Conduit" src="/favicon.png" class="w-full h-full" />
                 </div>
               </button>
-              <p class="text-xs text-center">Conduit</p>
+              <p class="text-xs text-center">VuView</p>
             </div>
             <div
               classList={{
