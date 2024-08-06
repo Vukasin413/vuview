@@ -105,7 +105,7 @@ module.exports = {
               text1: "#24292e",
               text2: "#2c2c2e",
               text3: "#333333",
-              primary: "#5e03d6",
+              primary: "#9747ff",
               secondary: "#6a737d",
               highlight: "#6910d6",
               accent1: "#d7a83a",
