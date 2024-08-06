@@ -100,8 +100,8 @@ module.exports = {
           extend: {
             colors: {
               bg1: "#f6f8fa",
-              bg2: "#e6e8ea",
-              bg3: "#212121",
+              bg2: "#212121",
+              bg3: "#e6e8ea",
               text1: "#24292e",
               text2: "#2c2c2e",
               text3: "#333333",
