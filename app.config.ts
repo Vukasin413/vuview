@@ -14,8 +14,8 @@ const pwaOptions: Partial<VitePWAOptions> = {
   },
   minify: false,
   manifest: {
-    name: "VuView - Web Player",
-    short_name: "VuView",
+    name: "Conduit",
+    short_name: "Conduit",
     background_color: "#000000",
     theme_color: "rgb(23,23,18)",
     icons: PWA_ICONS,
