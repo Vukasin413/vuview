@@ -443,7 +443,7 @@ export default function Header() {
           <img
             src="/logo.svg"
             alt="Conduit"
-            class="h-10 w-8 "
+            class="h-10 w- "
           />
         </Link>
         <Search />
