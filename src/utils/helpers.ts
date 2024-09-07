@@ -342,3 +342,68 @@ export async function sanitizeText(text: string) {
     .replaceAll(/<a href/gm, '<a class="link" href');
   return t;
 }
+
+export function generateColorFromString(input: string): string {
+  const colors: string[] = [
+    "#00FFFF",
+    "#52E3E1",
+    "#2196F3",
+    "#03A9F4",
+    "#33A8C7",
+    "#00BCD4",
+    "#A0E426",
+    "#FDF148",
+    "#FFEB3B",
+    "#FFC107",
+    "#FFAB00",
+    "#FF9800",
+    "#F77976",
+    "#FF6B6B",
+    "#FF5722",
+    "#F050AE",
+    "#E91E63",
+    "#D883FF",
+    "#9336FD",
+    "#8BC34A",
+    "#4CAF50",
+  ];
+
+  let hash = 0;
+  for (let i = 0; i < input.length; i++) {
+    hash = input.charCodeAt(i) + ((hash << 5) - hash);
+  }
+
+  const index = Math.abs(hash) % colors.length;
+  return colors[index];
+}
+
+export async function testLatency(url: string, numTests: number = 1) {
+  let totalTime = 0;
+  let successfulTests = 0;
+
+  for (let i = 0; i < numTests; i++) {
+    const start = performance.now();
+
+    try {
+      const response = await fetch(url);
+      if (response.ok) {
+        const end = performance.now();
+        totalTime += end - start;
+        successfulTests++;
+      } else {
+        console.warn(
+          `Test ${i + 1} returned non-OK status: ${response.status}`
+        );
+      }
+    } catch (error) {
+      console.error(`Test ${i + 1} failed:`, error);
+    }
+  }
+
+  if (successfulTests === 0) {
+    console.error("No successful tests were conducted.");
+    return null;
+  }
+
+  return totalTime / successfulTests;
+}

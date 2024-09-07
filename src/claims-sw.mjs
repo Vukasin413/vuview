@@ -86,6 +86,10 @@ const PRECACHE_ROUTES = [
     url: "/preferences",
     revision: __BUILD_REVISION__,
   },
+  {
+    url: "/pair",
+    revision: __BUILD_REVISION__,
+  },
 ];
 
 // TODO: Change back when VitePWA works with solid start
@@ -118,6 +122,18 @@ registerRoute(
           return request.url;
         },
       },
+    ],
+  })
+);
+registerRoute(
+  ({ request }) => request.destination === "script",
+  new CacheFirst({
+    cacheName: "js-cache",
+    plugins: [
+      new ExpirationPlugin({
+        maxEntries: 200,
+        maxAgeSeconds: 30 * 24 * 60 * 60, // 30 days
+      }),
     ],
   })
 );

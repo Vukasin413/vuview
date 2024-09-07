@@ -60,8 +60,13 @@ import { toast } from "./Toast";
 import Link from "./Link";
 import { THEME_OPTIONS } from "~/config/constants";
 import { useLocation, useSearchParams } from "@solidjs/router";
-import { AiOutlineFire } from "solid-icons/ai";
-import { BiRegularNetworkChart, BiSolidCog } from "solid-icons/bi";
+import { AiFillSetting, AiOutlineFire } from "solid-icons/ai";
+import {
+  BiRegularLogIn,
+  BiRegularLogOut,
+  BiRegularNetworkChart,
+  BiSolidCog,
+} from "solid-icons/bi";
 import {
   RiDeviceWifiFill,
   RiDeviceWifiLine,
@@ -70,6 +75,8 @@ import {
 } from "solid-icons/ri";
 import Toggle from "./Toggle";
 import { TbBucket } from "solid-icons/tb";
+import RoomManagerModal from "./RoomManagerModal";
+import { generateColorFromString, testLatency } from "~/utils/helpers";
 
 enum SyncState {
   DISCONNECTED = "disconnected",
@@ -107,54 +114,9 @@ export default function Header() {
     enabled: !isServer && !searchParams.offline,
   }));
 
-  const randomNames = [
-    "Alice",
-    "Bob",
-    "Charlie",
-    "Dave",
-    "Eve",
-    "Frank",
-    "Grace",
-    "Heidi",
-    "Ivan",
-    "Judy",
-    "Kevin",
-    "Larry",
-    "Mallory",
-    "Nancy",
-    "Oscar",
-    "Peggy",
-    "Quentin",
-    "Rupert",
-    "Sybil",
-    "Trent",
-    "Ursula",
-    "Victor",
-    "Walter",
-    "Xavier",
-    "Yvonne",
-    "Zelda",
-  ];
   const [appState, setAppState] = useAppState();
   const [modalOpen, setModalOpen] = createSignal(false);
   const [dropdownOpen, setDropdownOpen] = createSignal(false);
-  const [name, setName] = createSignal(
-    randomNames[Math.floor(Math.random() * randomNames.length)]
-  );
-  const [roomId, setRoomId] = createSignal("");
-  const [password, setPassword] = createSignal("");
-
-  createEffect(() => {
-    const room = JSON.parse(localStorage.getItem("room") || "{}");
-    if (room.name) {
-      setName(room.name);
-    }
-    setRoomId(room.id || "");
-    setPassword(room.password || "");
-  });
-
-  const [themeOpen, setThemeOpen] = createSignal(false);
-  const [instanceOpen, setInstanceOpen] = createSignal(false);
   function getSyncStatus(
     idbStatus: "connected" | "connecting" | "disconnected",
     webrtcStatus: "connected" | "connecting" | "disconnected"
@@ -178,12 +140,17 @@ export default function Header() {
       return SyncState.DISCONNECTED;
     }
   }
-  const instances = createMemo(() => {
-    return [
+
+  const [instances, setInstances] = createSignal([
+    ...preferences.customInstances,
+    ...(query.data ?? getStorageValue("instances", [], "json", "localStorage")),
+  ]);
+  createEffect(() => {
+    setInstances([
       ...preferences.customInstances,
       ...(query.data ??
         getStorageValue("instances", [], "json", "localStorage")),
-    ];
+    ]);
   });
 
   const cycleInstances = () => {
@@ -265,6 +232,9 @@ export default function Header() {
   });
 
   const location = useLocation();
+  createEffect(() => {
+    console.log(instances(), "instances");
+  });
   createEffect(
     on(
       () => location.pathname,
@@ -450,51 +420,44 @@ export default function Header() {
         <div class="flex items-center gap-2 ">
           <KobaltePopover.Root>
             <KobaltePopover.Trigger class="p-1 outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-lg">
-              <Switch>
-                <Match when={appState.sync.syncing}>
-                  <FaSolidArrowsRotate class="w-6 h-6 text-yellow-500" />
-                </Match>
-                <Match
-                  when={
-                    getSyncStatus(
-                      appState.sync.providers.opfs,
-                      appState.sync.providers.webrtc
-                    ) === SyncState.ONLINE
-                  }
+              <Show when={appState.sync.room.id}>
+                <div
+                  style={{
+                    "background-color": generateColorFromString(
+                      appState.sync.room.id
+                    ),
+                  }}
+                  class="w-9 h-9 rounded-full text-xl flex items-center justify-center text-black font-semibold relative"
                 >
-                  <BsCloudCheck class="w-7 h-7 text-green-500" />
-                </Match>
-                <Match
-                  when={
-                    getSyncStatus(
-                      appState.sync.providers.opfs,
-                      appState.sync.providers.webrtc
-                    ) === SyncState.DISCONNECTED
-                  }
-                >
-                  <TiTimes class="w-9 h-9 text-red-500" />
-                </Match>
-                <Match
-                  when={
-                    getSyncStatus(
-                      appState.sync.providers.opfs,
-                      appState.sync.providers.webrtc
-                    ) === SyncState.OFFLINE
-                  }
-                >
-                  <BsCloudSlash class="w-7 h-7 text-text1" />
-                </Match>
-                <Match
-                  when={
-                    getSyncStatus(
-                      appState.sync.providers.opfs,
-                      appState.sync.providers.webrtc
-                    ) === SyncState.VOLATILE
-                  }
-                >
-                  <BsDatabaseX class="w-6 h-6 text-text1" />
-                </Match>
-              </Switch>
+                  {appState.sync.room.name[0]}
+                  <div
+                    classList={{
+                      "absolute bottom-0 right-0 w-3 h-3 rounded-full ring-4 ring-bg1 flex items-center justify-center text-text1 p-1":
+                        true,
+                      "bg-primary":
+                        getSyncStatus(
+                          appState.sync.providers.opfs,
+                          appState.sync.providers.webrtc
+                        ) === SyncState.ONLINE,
+                      "bg-neutral-500":
+                        getSyncStatus(
+                          appState.sync.providers.opfs,
+                          appState.sync.providers.webrtc
+                        ) === SyncState.OFFLINE,
+                      "bg-amber-500":
+                        getSyncStatus(
+                          appState.sync.providers.opfs,
+                          appState.sync.providers.webrtc
+                        ) === SyncState.VOLATILE,
+                    }}
+                  />
+                </div>
+              </Show>
+              <Show when={!appState.sync.room.id}>
+                <div class="w-7 h-7 rounded-full text-xl flex items-center justify-center font-semibold relative">
+                  <BiRegularLogIn class="w-full h-full" />
+                </div>
+              </Show>
             </KobaltePopover.Trigger>
             <KobaltePopover.Portal>
               <KobaltePopover.Content
@@ -508,12 +471,15 @@ export default function Header() {
               >
                 <KobaltePopover.Arrow />
                 <KobaltePopover.Description
-                  class={`text-sm p-1 text-left flex flex-col gap-2 items-center ${
-                    roomId() ? "text-green-600" : "text-red-600"
-                  }`}
+                  class={`text-sm p-1 text-left flex flex-col gap-2 items-center`}
                 >
-                  <Show when={roomId()}>
-                    Connected: {roomId()}
+                  <Show when={appState.sync.room.id}>
+                    <div class="flex flex-col gap-1 items-center">
+                      <div class="font-semibold">{appState.sync.room.name}</div>
+                      <div class="text-xs text-text2">
+                        {appState.sync.room.id}
+                      </div>
+                    </div>
                     <div class="flex items-start flex-col gap-2 text-text1">
                       <details class="text-xs">
                         <summary class="link">
@@ -521,30 +487,33 @@ export default function Header() {
                         </summary>
                         <For each={appState.sync.users}>
                           {(user) => (
-                            <div class="flex items-center gap-2">
-                              ID: {user.id}
-                              Name: {user.name}{" "}
-                              {user.name === name() && "(You)"}
+                            <div class="flex flex-col items-center gap-2">
+                              <div>ID: {user.id}</div>
                             </div>
                           )}
                         </For>
                       </details>
-                      <div>
-                        Syncing: {appState.sync.syncing ? "true" : "false"}
-                      </div>
-                      <div>IndexedDB: {appState.sync.providers.idb}</div>
                       <div>WebRTC: {appState.sync.providers.webrtc}</div>
                       <div>OPFS: {appState.sync.providers.opfs}</div>
                     </div>
-                    <Button
-                      label="Leave"
-                      onClick={() => {
-                        localStorage.removeItem("room");
-                        window.location.reload();
-                      }}
-                    />
+                    <div class="flex flex-col gap-2 self-end">
+                      <Button
+                        label="Manage rooms"
+                        icon={<AiFillSetting class="w-6 h-6" />}
+                        onClick={() => setModalOpen(true)}
+                      />
+                      <Button
+                        appearance="danger"
+                        label="Leave room"
+                        icon={<BiRegularLogOut class="w-6 h-6" />}
+                        onClick={() => {
+                          localStorage.removeItem("room");
+                          window.location.reload();
+                        }}
+                      />
+                    </div>
                   </Show>
-                  <Show when={!roomId()}>
+                  <Show when={!appState.sync.room.id}>
                     Disconnected
                     <Button
                       label="Join room"
@@ -683,6 +652,42 @@ export default function Header() {
                   </DropdownMenu.SubTrigger>
                   <DropdownMenu.Portal>
                     <DropdownMenu.SubContent class="bg-bg1 max-h-[55vh] overflow-y-auto scrollbar border border-bg2 shadow p-2 rounded-md z-[999999] animate-in fade-in slide-in-from-right-10 zoom-in-50 duration-300 ">
+                      <Button
+                        label="Test latency"
+                        class="my-2 w-full"
+                        //eslint-disable-next-line solid/reactivity
+                        onClick={() => {
+                          let index = 0;
+                          for (const instance of instances()) {
+                            testLatency(
+                              `${instance.api_url}/streams/dQw4w9WgXcQ/`
+                            )
+                              .then((latency) => {
+                                setInstances((prev) => {
+                                  const newInstances = [...prev];
+                                  newInstances[index] = {
+                                    ...instance,
+                                    latency: latency || -1,
+                                  };
+                                  return newInstances;
+                                });
+                              })
+                              .catch(() => {
+                                setInstances((prev) => {
+                                  const newInstances = [...prev];
+                                  newInstances[index] = {
+                                    ...instance,
+                                    latency: -1,
+                                  };
+                                  return newInstances;
+                                });
+                              })
+                              .finally(() => {
+                                index++;
+                              });
+                          }
+                        }}
+                      />
                       <For each={instances() as PipedInstance[]}>
                         {(instance) => (
                           <DropdownMenu.Item
@@ -707,7 +712,35 @@ export default function Header() {
                                 <FaSolidCheck class="absolute left-1 top-[12px]" />
                               </Show>
                               <div class="flex flex-col gap-1">
-                                <div class="text-text1">{instance.name}</div>
+                                <div class="text-text1 flex gap-1 items-center">
+                                  {instance.name}
+                                  <Show
+                                    when={Number.isFinite(
+                                      (instance as any).latency
+                                    )}
+                                  >
+                                    <span
+                                      classList={{
+                                        "text-xs rounded-lg bg-bg2 px-2 py-1 font-semibold":
+                                          true,
+                                        "text-green-500":
+                                          (instance as any).latency <= 100 &&
+                                          (instance as any).latency !== -1,
+                                        "text-amber-500":
+                                          (instance as any).latency <= 300 &&
+                                          (instance as any).latency > 100 &&
+                                          (instance as any).latency !== -1,
+                                        "text-red-500":
+                                          (instance as any).latency > 300 ||
+                                          (instance as any).latency === -1,
+                                      }}
+                                    >
+                                      {(instance as any).latency === -1
+                                        ? "error"
+                                        : (instance as any).latency + "ms"}
+                                    </span>
+                                  </Show>
+                                </div>
                                 <div class="flex text-xs gap-1 items-center">
                                   <Show when={instance.cdn}>
                                     <BiRegularNetworkChart class="w-4 h-4 text-primary" />
@@ -739,48 +772,7 @@ export default function Header() {
           </DropdownMenu.Root>
         </div>
       </div>
-      <Modal isOpen={modalOpen()} title="Join Room" setIsOpen={setModalOpen}>
-        <div class="w-full h-full bg-bg1">
-          <div class="p-4 flex flex-col items-center justify-center gap-2">
-            <Field
-              name="name"
-              value={name()}
-              onInput={(e) => setName(e)}
-              placeholder="Name"
-              type="text"
-              class="w-full"
-            />
-            <Field
-              name="room"
-              type="text"
-              placeholder="Room ID"
-              value={roomId()}
-              onInput={(e) => setRoomId(e)}
-            />
-            <Field
-              name="password"
-              type="password"
-              placeholder="Password"
-              value={password()}
-              onInput={(e) => setPassword(e)}
-            />
-            <Button
-              onClick={() => {
-                localStorage.setItem(
-                  "room",
-                  JSON.stringify({
-                    name: name(),
-                    id: roomId(),
-                    password: password(),
-                  })
-                );
-                window.location.reload();
-              }}
-              label="Join"
-            />
-          </div>
-        </div>
-      </Modal>
+      <RoomManagerModal isOpen={modalOpen()} setIsOpen={setModalOpen} />
     </nav>
   );
 }
